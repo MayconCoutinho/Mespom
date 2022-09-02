@@ -33,14 +33,12 @@ const PostPage = () => {
   }
 
   const VotarComentarios = (id) => {
-
     window.localStorage.removeItem('IdPost')
     window.localStorage.setItem("IdPost", id)
     CreateCommentVote()
   }
 
   const ComentariosPut = (id) => {
-
     window.localStorage.removeItem('IdPost')
     window.localStorage.setItem("IdPost", id)
     ChangeCommentVote()
@@ -65,8 +63,6 @@ const PostPage = () => {
 
   return (
     <Box>
-
-
       <Center
         bg="#EDEDED"
         pb="2"

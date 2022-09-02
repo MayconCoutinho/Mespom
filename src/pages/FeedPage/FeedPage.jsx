@@ -222,12 +222,12 @@ const FeedPage = () => {
                             color='#c70000'
                             _hover={{ color: "#810101" }}
                             w={10} h={8} />
-                          <RepeatIcon
+                          {/* <RepeatIcon
                             cursor='pointer'
                             onClick={() => TiraVoto(item.id)}
                             color='#9c9a00'
                             _hover={{ color: "#9c9a10" }}
-                            w={8} h={4} />
+                            w={8} h={4} /> */}
                         </Box>
                         <Box paddingRight='10vw'>
                           <Text><ChatIcon
