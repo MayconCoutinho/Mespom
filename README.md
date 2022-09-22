@@ -27,7 +27,7 @@ React.js
 Styled Components
 
 ## 💻 Projeto
- A aplicação consiste em  visualizar postagem e posta, podendo fazer comentarios e dar link ou deslike bos posts. No total a aplicação tem 4 telas Login, cadastro, Feed, comentarios do post.
+ A aplicação consiste em  visualizar postagem e posta, podendo fazer comentarios e dar link ou deslike nos posts. No total a aplicação tem 4 telas Login, cadastro, Feed, comentarios do post.
  
  
 ## 🖥️ Libs para instalar e visualizar o projeto 
