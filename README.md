@@ -33,7 +33,7 @@
 <a id="Introdução"></a>
 ## 🧩 Introdução 
 
-  ***⠀⠀⠀⠀Nesta aplicação, é possível visualizar viagens espaciais futuristas criadas pelo administrador. Os usuários podem se candidatar a uma viagem escolhida preenchendo os dados obrigatórios para participação, e em seguida, o administrador decidirá quem será selecionado para a aventura, aprovando os candidatos.***
+  ***⠀⠀⠀⠀Pom é uma rede social de mensagens em React.js e com design em Chakra UI, projetada para oferecer uma experiência de comunicação rápida e eficiente. O nome "Pom" foi inspirado no pombo, um animal conhecido por sua habilidade de comunicação rápida e eficaz.***
 
 <br/>
 
@@ -86,7 +86,7 @@
 > Caso tenha Git basta da git clone, caso não tenha baixe o projeto completo em dowlon
 
 ```BASH
-git clone https://github.com/MayconCoutinho/Labex
+git clone https://github.com/MayconCoutinho/Pom
 ```
 
 <br /> 
