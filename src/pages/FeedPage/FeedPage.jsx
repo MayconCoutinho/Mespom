@@ -31,7 +31,7 @@ import {
   ChevronDownIcon,
   RepeatIcon,
 } from "@chakra-ui/icons";
-import Logo from "../../assets/logo.png";
+import Logo from "../../assets/img/logo.png";
 
 const FeedPage = () => {
   // ConfirmandoToken()
