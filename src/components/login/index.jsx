@@ -16,7 +16,7 @@ import {
 import { useForm } from "../../hooks/useForm";
 import { LoginPost } from "../../hooks/axios";
 import { LoginToken } from "../../components/Token/Token";
-import Logo from "../../assets/img/logo/logo.png";
+import Logo from "../../assets/img/logo.png";
 import { useState } from "react";
 
 export const Login = () => {

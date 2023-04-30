@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "../../hooks/useForm";
 import { LoginToken } from "../../components/Token/Token";
-import Logo from "../../assets/img/logo/logo.png";
+import Logo from "../../assets/img/logo.png";
 
 export const Cadastro = () => {
   LoginToken();
