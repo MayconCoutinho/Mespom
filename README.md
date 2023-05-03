@@ -28,7 +28,7 @@
  
 <br/>
 
-
+# 🚧 Esse projeto dependia de uma api de outra pessoa que estava na heroko e quando a heroko se tornou paga a api parou de funcionar.
 
 <a id="Introdução"></a>
 ## 🧩 Introdução 
