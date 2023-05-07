@@ -52,8 +52,8 @@
   
 <br/>
  
-### Login: teste@gmail.com.br
-### Senha: 123456
+### Login: testando123@gmail.com
+### Senha: 123456789
  
 <br/>
 
