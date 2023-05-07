@@ -1,87 +1,69 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
 import { BASE_URL } from "../components/URL/BASE_URL";
 import { goToFeedPage } from "../routes/coordinator";
-import postsJson from "../mock/json/posts.json";
 
-export const LoginPost = (email, password, navigate) => {
-  // Só to colocando o goToFeedPage porque api ta com problemas
-  goToFeedPage(navigate);
-
-  axios
-    .post(`${BASE_URL}/users/login`, {
+export const LoginPost = async (email, password, navigate) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/users/login`, {
       email: email,
       password: password,
+    });
+
+    window.localStorage.setItem("token", response.data.token);
+    goToFeedPage(navigate);
+  } catch (error) {
+    alert("Senha errada!");
+  }
+  return false;
+};
+
+export const RegisterUser = (name, email, password) => {
+  axios
+    .post(`${BASE_URL}/users/signup`, {
+      name,
+      email,
+      password,
     })
     .then((response) => {
-      window.localStorage.setItem("token", response.data.token);
-      goToFeedPage(navigate);
+      alert("Cadastrado com sucesso!");
     })
     .catch((err) => {
       alert("Senha errada!");
     });
 };
 
-export const GetPost = (paginaAtual) => {
+export const GetPost = async (paginaAtual) => {
   const token = window.localStorage.getItem("token");
 
-  const [getTripsList, setGetTripsList] = useState([]);
-  const [tempo, setTempo] = useState(0);
-
-  const atualizar =
-    setTimeout(() => {
-      setTempo(tempo + 1);
-    }, 0.5 * 1000) || false;
-
-  useEffect(() => {
-    // axios
-    //   .get(`${BASE_URL}/posts?page=${paginaAtual}&size=${8}`, {
-    //     headers: { Authorization: token },
-    //   })
-    //   .then((response) => {
-    //     setGetTripsList(response.data);
-    //     atualizar();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    setGetTripsList(postsJson);
-  }, [paginaAtual, tempo]);
-
-  return getTripsList;
-};
-
-export const GetPostComments = () => {
-  const token = window.localStorage.getItem("token");
-
-  const id = window.localStorage.getItem("IdPost");
-  const [tempo, setTempo] = useState(0);
-
-  const atualizar =
-    setTimeout(() => {
-      setTempo(tempo + 1);
-    }, 1 * 1000) || false;
-
-  const [getTripsList, setGetTripsList] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(`${BASE_URL}/posts/${id}/comments`, {
+  try {
+    const response = await axios.get(
+      `${BASE_URL}/posts?page=${paginaAtual}&size=${8}`,
+      {
         headers: { Authorization: token },
-      })
-      .then((response) => {
-        setGetTripsList(response.data);
-        atualizar();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [tempo]);
+      }
+    );
 
-  return getTripsList;
+    return response.data;
+  } catch (error) {
+    console.log(error.response);
+  }
 };
 
-export const CreatePost = (title, comentario) => {
+export const GetPostComments = async () => {
+  const token = window.localStorage.getItem("token");
+  const id = window.localStorage.getItem("IdPost");
+
+  try {
+    const response = await axios.get(`${BASE_URL}/posts/${id}/comments`, {
+      headers: { Authorization: token },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error.response);
+  }
+};
+
+export const CreatePost = async (title, comentario) => {
   const token = window.localStorage.getItem("token");
 
   const body = {
@@ -89,17 +71,17 @@ export const CreatePost = (title, comentario) => {
     body: comentario,
   };
 
-  axios
-    .post(`${BASE_URL}/posts`, body, { headers: { Authorization: token } })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
+  try {
+    await axios.post(`${BASE_URL}/posts`, body, {
+      headers: { Authorization: token },
     });
+  } catch (error) {
+    console.log(error.response);
+  }
+  return false;
 };
 
-export const CreateComment = (dados) => {
+export const CreateComment = async (dados) => {
   const token = window.localStorage.getItem("token");
 
   const id = window.localStorage.getItem("IdPost");
@@ -108,19 +90,17 @@ export const CreateComment = (dados) => {
     body: dados.comentario,
   };
 
-  axios
-    .post(`${BASE_URL}/posts/${id}/comments`, body, {
+  try {
+    await axios.post(`${BASE_URL}/posts/${id}/comments`, body, {
       headers: { Authorization: token },
-    })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
     });
+  } catch (error) {
+    console.log(error.response);
+  }
+  return false;
 };
 
-export const CreatePostVote = () => {
+export const CreatePostVote = async () => {
   const token = window.localStorage.getItem("token");
 
   const id = window.localStorage.getItem("IdPost");
@@ -129,19 +109,16 @@ export const CreatePostVote = () => {
     direction: 1,
   };
 
-  axios
-    .post(`${BASE_URL}/posts/${id}/votes`, body, {
+  try {
+    await axios.post(`${BASE_URL}/posts/${id}/votes`, body, {
       headers: { Authorization: token },
-    })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
     });
+  } catch (error) {
+    console.log(error.response);
+  }
+  return false;
 };
-
-export const ChangePostVote = () => {
+export const ChangePostVote = async () => {
   const token = window.localStorage.getItem("token");
 
   const id = window.localStorage.getItem("IdPost");
@@ -150,73 +127,61 @@ export const ChangePostVote = () => {
     direction: -1,
   };
 
-  axios
-    .put(`${BASE_URL}/posts/${id}/votes`, body, {
+  try {
+    await axios.put(`${BASE_URL}/posts/${id}/votes`, body, {
       headers: { Authorization: token },
-    })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
     });
+  } catch (error) {
+    console.log(error.response);
+  }
+  return false;
 };
 
-export const CreateCommentVote = () => {
+export const CreateCommentVote = async (id) => {
   const token = window.localStorage.getItem("token");
-
-  const id = window.localStorage.getItem("IdPost");
-
-  const body = {
-    direction: 1,
-  };
-
-  axios
-    .post(`${BASE_URL}/comments/${id}/votes`, body, {
-      headers: { Authorization: token },
-    })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-export const ChangeCommentVote = () => {
-  const token = window.localStorage.getItem("token");
-
-  const id = window.localStorage.getItem("IdPost");
 
   const body = {
     direction: -1,
   };
 
-  axios
-    .put(`${BASE_URL}/comments/${id}/votes`, body, {
+  try {
+    await axios.put(`${BASE_URL}/comments/${id}/votes`, body, {
       headers: { Authorization: token },
-    })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
     });
+  } catch (error) {
+    console.log(error.response);
+  }
+  return false;
 };
 
-export const DeletePostVote = () => {
+export const ChangeCommentVote = async (id) => {
+  const token = window.localStorage.getItem("token");
+
+  const body = {
+    direction: -1,
+  };
+
+  try {
+    await axios.put(`${BASE_URL}/comments/${id}/votes`, body, {
+      headers: { Authorization: token },
+    });
+  } catch (error) {
+    console.log(error.response);
+  }
+  return false;
+};
+
+export const DeletePostVote = async () => {
   const token = window.localStorage.getItem("token");
 
   const id = window.localStorage.getItem("IdPost");
 
-  axios
-    .delete(`${BASE_URL}/posts/${id}/votes`, {
+  try {
+    await axios.delete(`${BASE_URL}/posts/${id}/votes`, {
       headers: { Authorization: token },
-    })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((err) => {
-      console.log(err);
     });
+  } catch (error) {
+    console.log(error.response);
+  }
+  return false;
 };

@@ -31,14 +31,11 @@ export const Login = () => {
     password: "",
   });
 
-  const FazerLogin = (event) => {
+  const FazerLogin = async (event) => {
     setCarregando(true);
     event.preventDefault();
-    LoginPost(formValues.email, formValues.password, navigate);
-
-    setTimeout(() => {
-      setCarregando(false);
-    }, 2 * 1000);
+    await LoginPost(formValues.email, formValues.password, navigate);
+    setCarregando(false);
   };
 
   return (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { goToFeedPage } from "../../routes/coordinator";
 import {
@@ -11,7 +11,6 @@ import {
   Button,
   Textarea,
   Text,
-  CloseButton,
   Spinner,
   Image,
 } from "@chakra-ui/react";
@@ -29,27 +28,13 @@ import {
   ArrowLeftIcon,
 } from "@chakra-ui/icons";
 import Logo from "../../assets/img/logo.png";
+import { GlobalContext } from "../../context";
 
 const PostPage = () => {
-  // ConfirmandoToken()
-
-  const todasPostagens = GetPostComments();
-
-  const SairDaConta = () => {
-    window.localStorage.removeItem("token");
-  };
-
-  const VotarComentarios = (id) => {
-    window.localStorage.removeItem("IdPost");
-    window.localStorage.setItem("IdPost", id);
-    CreateCommentVote();
-  };
-
-  const ComentariosPut = (id) => {
-    window.localStorage.removeItem("IdPost");
-    window.localStorage.setItem("IdPost", id);
-    ChangeCommentVote();
-  };
+  ConfirmandoToken();
+  const { textoDoPost, titudoDoPost, username } = useContext(GlobalContext);
+  const [allPosts, setAllPosts] = useState(null);
+  const [atualizar, setAtualizar] = useState(false);
 
   const navigate = useNavigate();
 
@@ -57,60 +42,100 @@ const PostPage = () => {
     comentario: "",
   });
 
-  const comentar = (event) => {
+  useEffect(() => {
+    const result = GetPostComments();
+
+    result.then((response) => {
+      setAllPosts(response);
+    });
+  }, [atualizar]);
+
+  const SairDaConta = () => {
+    window.localStorage.removeItem("token");
+  };
+
+  const VotarComentarios = async (id) => {
+    await CreateCommentVote(id);
+    setAtualizar(!atualizar);
+  };
+
+  const ComentariosPut = async (id) => {
+    await ChangeCommentVote(id);
+    setAtualizar(!atualizar);
+  };
+
+  const comentar = async (event) => {
     event.preventDefault();
-    CreateComment(formValues);
+    await CreateComment(formValues);
     cleanFields();
+    setAtualizar(!atualizar);
   };
 
   return (
     <Box>
-      <Center bg="#EDEDED" pb="2" boxShadow="0 2px 2px #ccc">
-        <Center>
-          <Image
-            onClick={() => goToFeedPage(navigate)}
-            cursor="pointer"
-            paddingTop={1.5}
-            marginLeft={20}
-            boxSize="40px"
-            src={Logo}
-            alt="Dan Abramov"
-          />
-
-          <Button
-            left={55}
-            color="#4088CB"
-            colorScheme="#4088CB"
-            variant="ghost"
-            _hover={{ color: "#022444" }}
-            onClick={() => SairDaConta()}
-          >
-            {" "}
-            Logout{" "}
-          </Button>
-        </Center>
+      <Center
+        bg="#EDEDED"
+        pb={2}
+        pt={2}
+        boxShadow="0 2px 2px #ccc"
+        justifyContent={"space-between"}
+      >
         <ArrowLeftIcon
-          position="absolute"
-          left="8"
+          marginLeft={5}
           color="#022444"
           onClick={() => goToFeedPage(navigate)}
           size="lg"
           _hover={{ color: "#4088CB" }}
         />
+        <Image
+          onClick={() => goToFeedPage(navigate)}
+          cursor="pointer"
+          boxSize="40px"
+          src={Logo}
+          alt="logo"
+        />
+
+        <Button
+          marginRight={5}
+          color="#4088CB"
+          colorScheme="#4088CB"
+          variant="ghost"
+          _hover={{ color: "#022444" }}
+          onClick={() => {
+            SairDaConta();
+            goToFeedPage(navigate);
+          }}
+        >
+          {" "}
+          Logout{" "}
+        </Button>
       </Center>
 
-      <Flex align="center" justify="center">
-        <Center
-          w="100%"
-          height={300}
-          bg="white"
-          top={100}
-          position="absolute"
-          p="6"
+      <Flex flexDirection={"column"} align="center" justify="center">
+        <Box
+          marginTop="30px"
+          bg="#FBFBFB"
+          border="1px solid #E0E0E0"
+          paddingTop="1vw"
+          paddingBottom={"4vw"}
+          paddingLeft="2vw"
+          paddingRight="2vw"
+          borderRadius="1vw"
+          h="auto"
+          w={[350, 400, 500]}
         >
+          <Text fontSize="xs" color="#585858" marginBottom="10px">
+            Enviado por: {username}
+          </Text>
+          <Text>
+            Titulo : {titudoDoPost}
+            {textoDoPost}
+          </Text>
+        </Box>
+        <Center top={100} p="2">
           <form onSubmit={comentar}>
-            <FormControl display="flex" flexDir="column" gap="4">
-              <HStack spacing="4">
+            <FormControl spacing="4" padding={2}>
+              <HStack>
                 <Box w="100%">
                   <Textarea
                     pr="10.5rem"
@@ -126,14 +151,14 @@ const PostPage = () => {
                   w={240}
                   p="6"
                   type="submit"
-                  bg="linear-gradient(90deg, #FF6489 0%, #F9B24E 100%)"
+                  bg="linear-gradient(90deg, #7F82A4 0%, #564958 100%)"
                   _hover={{
-                    bg: "linear-gradient(90deg, #fd446fd2 0%, #f8a633c0 100%)",
+                    bg: "linear-gradient(90deg,#7f82a4ac 0%, #564958b3   100%)",
                   }}
                   color="white"
                   fontWeight="bold"
                   fontSize="xl"
-                  mt="2"
+                  mt="8"
                   borderRadius={10}
                 >
                   Responder
@@ -141,69 +166,70 @@ const PostPage = () => {
               </HStack>
               <Divider
                 orientation="horizontal"
-                marginTop="2vw"
+                marginTop="8"
                 padding={0.499}
-                bg="linear-gradient(90deg, #ff003c 0%, #ff9500 100%)"
+                bg="linear-gradient(90deg,#7F82A4 0%, #564958 100%)"
               />
             </FormControl>
           </form>
-          <Center w="100%" maxW={840} top={280} position="absolute" p="6">
-            <HStack display="flex" flexDir="column" gap="4">
-              <Box w="150%">
-                {todasPostagens.length > 0 ? (
-                  todasPostagens &&
-                  todasPostagens?.map((item) => (
-                    <>
-                      <Text
-                        marginTop="3vw"
-                        bg="#FBFBFB"
-                        border="1px solid #E0E0E0"
-                        paddingTop="1vw"
-                        paddingLeft="2vw"
-                        borderRadius="1vw"
-                        minHeight="20vw"
-                        minWidth="40vw"
-                        maxWidth="90vw"
-                        maxHeight="35vw"
-                      >
-                        <Text fontSize="xs" color="#585858" marginBottom="3vw">
-                          {" "}
-                          Enviado por: {item.username}{" "}
-                        </Text>
-
-                        {item.body}
-
-                        <HStack justify="center" paddingTop="5vw">
-                          <Box marginLeft="30vw">
-                            <ChevronUpIcon
-                              cursor="pointer"
-                              onClick={() => VotarComentarios(item.id)}
-                              color="#47c200"
-                              _hover={{ color: "#488624" }}
-                              w={8}
-                              h={8}
-                            />
-                            {item.voteSum || 0}
-                            <ChevronDownIcon
-                              cursor="pointer"
-                              onClick={() => ComentariosPut(item.id)}
-                              color="#c70000"
-                              _hover={{ color: "#810101" }}
-                              w={8}
-                              h={8}
-                            />
-                          </Box>
-                        </HStack>
-                      </Text>
-                    </>
-                  ))
-                ) : (
-                  <Spinner color="#fd7f00" size="xl" />
-                )}
-              </Box>
-            </HStack>
-          </Center>
         </Center>
+
+        {allPosts === null ? (
+          <Spinner color="#fd7f00" size="xl" marginTop={10} />
+        ) : allPosts.length > 0 ? (
+          allPosts.map((item) => {
+            return (
+              <Box
+                marginTop="3vw"
+                bg="#FBFBFB"
+                border="1px solid #E0E0E0"
+                paddingTop="1vw"
+                paddingLeft="2vw"
+                paddingRight="2vw"
+                borderRadius="1vw"
+                h="auto"
+                w={[350, 400, 500]}
+              >
+                <Text>
+                  <Text fontSize="xs" color="#585858" marginBottom="10px">
+                    {" "}
+                    Enviado por: {item.username}{" "}
+                  </Text>
+                  {console.log(item)}
+                  {item.body}
+                  <HStack
+                    spacing="20px"
+                    justify="end"
+                    marginTop={5}
+                    marginBottom={5}
+                  >
+                    <Box>
+                      <ChevronUpIcon
+                        cursor="pointer"
+                        onClick={() => VotarComentarios(item.postId)}
+                        color="#47c200"
+                        _hover={{ color: "#488624" }}
+                        w={8}
+                        h={8}
+                      />
+                      {item.voteSum || 0}
+                      <ChevronDownIcon
+                        cursor="pointer"
+                        onClick={() => ComentariosPut(item.postId)}
+                        color="#c70000"
+                        _hover={{ color: "#810101" }}
+                        w={8}
+                        h={8}
+                      />
+                    </Box>
+                  </HStack>
+                </Text>
+              </Box>
+            );
+          })
+        ) : (
+          <h1> Sem postes </h1>
+        )}
       </Flex>
     </Box>
   );

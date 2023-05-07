@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { goToLoginPage, goToPostPage } from "../../routes/coordinator";
 import {
@@ -32,42 +32,62 @@ import {
   RepeatIcon,
 } from "@chakra-ui/icons";
 import Logo from "../../assets/img/logo.png";
+import { GlobalContext } from "../../context";
 
 const FeedPage = () => {
-  // ConfirmandoToken()
+  ConfirmandoToken();
+
+  const { setTextoDoPost, setTitudoDoPost, setUsername } =
+    useContext(GlobalContext);
 
   const navigate = useNavigate();
 
   const [paginaAtual, setPaginaAtual] = useState(1);
+  const [todasPostagens, setTodasPostagens] = useState([]);
+  const [atualizar, setAtualizar] = useState(false);
 
   if (paginaAtual < 1) {
     setPaginaAtual(1);
   }
 
-  const todasPostagens = GetPost(paginaAtual);
+  useEffect(() => {
+    const result = GetPost(paginaAtual);
 
-  const idPost = (id) => {
+    result.then((response) => {
+      setTodasPostagens(response);
+    });
+  }, [paginaAtual, atualizar]);
+
+  const idPost = (id, tituloPost, textoPost, username) => {
     window.localStorage.removeItem("IdPost");
     window.localStorage.setItem("IdPost", id);
+    setTextoDoPost(textoPost);
+    setTitudoDoPost(tituloPost);
+    setUsername(username);
+
     goToPostPage(navigate);
   };
 
-  const VotarPost = (id) => {
+  const VotarPost = async (id) => {
     window.localStorage.removeItem("IdPost");
     window.localStorage.setItem("IdPost", id);
-    CreatePostVote();
+    await CreatePostVote();
+    setAtualizar(!atualizar);
   };
 
-  const VotarPut = (id) => {
+  const VotarPut = async (id) => {
     window.localStorage.removeItem("IdPost");
     window.localStorage.setItem("IdPost", id);
-    ChangePostVote();
+    await ChangePostVote();
+    setAtualizar(!atualizar);
   };
 
-  const TiraVoto = (id) => {
+  const TiraVoto = async (id) => {
     window.localStorage.removeItem("IdPost");
     window.localStorage.setItem("IdPost", id);
-    DeletePostVote();
+
+    await DeletePostVote();
+    setAtualizar(!atualizar);
   };
 
   const SairDaConta = () => {
@@ -80,10 +100,11 @@ const FeedPage = () => {
     comentario: "",
   });
 
-  const Postar = (event) => {
+  const Postar = async (event) => {
     event.preventDefault();
-    CreatePost(formValues.title, formValues.comentario);
+    await CreatePost(formValues.title, formValues.comentario);
     cleanFields();
+    setAtualizar(!atualizar);
   };
 
   return (
@@ -188,33 +209,35 @@ const FeedPage = () => {
                 </HStack>
 
                 {todasPostagens.length > 0 ? (
-                  todasPostagens &&
                   todasPostagens?.map((item) => (
-                    <>
-                      <Text
-                        marginTop="3vw"
-                        bg="#FBFBFB"
-                        border="1px solid #E0E0E0"
-                        paddingTop="1vw"
-                        paddingLeft="2vw"
-                        borderRadius="1vw"
-                        minHeight="20vw"
-                        minWidth="40vw"
-                        maxWidth="90vw"
-                        maxHeight="35vw"
-                      >
-                        <Text fontSize="xs" color="#585858" marginBottom="3vw">
+                    <Box
+                      marginTop="3vw"
+                      bg="#FBFBFB"
+                      border="1px solid #E0E0E0"
+                      paddingTop="1vw"
+                      paddingLeft="2vw"
+                      paddingRight="2vw"
+                      borderRadius="1vw"
+                      h="auto"
+                      w={[350, 400, 500]}
+                    >
+                      <Text>
+                        <Text fontSize="xs" color="#585858" marginBottom="10px">
                           {" "}
-                          Enviado por: {item.username}{" "}
+                          Enviado por: {item.username}
                         </Text>
                         <Text noOfLines="2">
-                          {" "}
                           Titulo : {item.title}
                           {item.body}
                         </Text>
 
-                        <HStack justify="center" paddingTop="5vw">
-                          <Box marginLeft="30vw">
+                        <HStack
+                          spacing="20px"
+                          justify="end"
+                          marginTop={5}
+                          marginBottom={5}
+                        >
+                          <Box>
                             <ChevronUpIcon
                               cursor="pointer"
                               onClick={() => VotarPost(item.id)}
@@ -241,19 +264,26 @@ const FeedPage = () => {
                               h={4}
                             />
                           </Box>
-                          <Box paddingRight="10vw">
+                          <Box paddingRight="25px">
                             <Text>
                               <ChatIcon
                                 _hover={{ color: "#f59415" }}
                                 cursor="pointer"
-                                onClick={() => idPost(item.id)}
+                                onClick={() =>
+                                  idPost(
+                                    item.id,
+                                    item.title,
+                                    item.body,
+                                    item.username
+                                  )
+                                }
                               />{" "}
                               {item.commentCount || 0}{" "}
                             </Text>
                           </Box>
                         </HStack>
                       </Text>
-                    </>
+                    </Box>
                   ))
                 ) : (
                   <Center w="100%">
