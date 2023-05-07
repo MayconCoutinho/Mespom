@@ -1,33 +1,25 @@
 // HomePage []
 
-
 export const goToPostPage = (navigate) => {
-  navigate("/PostPage")
-}
+  navigate("/PostPage");
+};
 
 export const goToLoginPage = (navigate) => {
-  navigate("/LoginPage")
-}
-
+  navigate("/LoginPage");
+};
 
 export const goToFeedPage = (navigate) => {
-  navigate("/FeedPage")
-}
-
+  navigate("/FeedPage");
+};
 
 export const goToCadastroPage = (navigate) => {
-    navigate("/CadastroPage")
-  }
+  navigate("/CadastroPage");
+};
 
 export const goToHomePage = (navigate) => {
-      navigate("/")
-    }
-  
+  navigate("/");
+};
+
 export const goToVoltar = (navigate) => {
-      navigate(-1)
-    }
-
-
-
-
-
+  navigate(-1);
+};

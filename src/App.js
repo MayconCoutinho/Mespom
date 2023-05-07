@@ -1,15 +1,17 @@
 import React from "react";
-import { Router } from "./routes/Routes"
-import { ChakraProvider } from '@chakra-ui/react'
-
+import { Router } from "./routes/Routes";
+import { ChakraProvider } from "@chakra-ui/react";
+import { GlobalProvider } from "./context";
 
 function App() {
   return (
-    <React.StrictMode>
-      <ChakraProvider>
-        <Router/>
-      </ChakraProvider>
-    </React.StrictMode>
+    <GlobalProvider>
+      <React.StrictMode>
+        <ChakraProvider>
+          <Router />
+        </ChakraProvider>
+      </React.StrictMode>
+    </GlobalProvider>
   );
 }
 

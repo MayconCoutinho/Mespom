@@ -30,7 +30,7 @@ export const Cadastro = () => {
 
   const FazerCadastro = (event) => {
     event.preventDefault();
-    console.log(formValues);
+
     cleanFields();
   };
 
