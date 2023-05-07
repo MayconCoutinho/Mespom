@@ -58,11 +58,11 @@
 <br/>
 
 
-| Login | Cadastro | Carregando... | Feed |
+| Login | Cadastro | Feed | Comentario |
 |---|---|---|---|
-<img width='200px' src='https://user-images.githubusercontent.com/60453269/235260129-5fef676d-48a6-4a58-9658-81eade1e9b5a.png'></img>|<img width='200px' src='https://user-images.githubusercontent.com/60453269/235260736-ca485132-937a-4f0f-8b4e-f1f4ee4b3f7a.png'></img>|<img width='200px' src='https://user-images.githubusercontent.com/60453269/235260840-2438262a-b6d2-49bf-ab74-3091a1d6b29b.png'></img>|<img width='200px' src='https://user-images.githubusercontent.com/60453269/235260901-3d440ea9-6e86-4a13-ab04-44bed243bc42.png'></img>
+<img width='200px' src='https://user-images.githubusercontent.com/60453269/235260129-5fef676d-48a6-4a58-9658-81eade1e9b5a.png'></img>|<img width='200px' src='https://user-images.githubusercontent.com/60453269/235260736-ca485132-937a-4f0f-8b4e-f1f4ee4b3f7a.png'></img>|<img width='200px' src='https://user-images.githubusercontent.com/60453269/236651480-2fbcd0af-7a4c-43ea-813a-df0357d757e3.png'></img>|<img width='200px' src='https://user-images.githubusercontent.com/60453269/236651520-d5a697cd-45bd-4d0a-b104-2ed361ec5c2d.png'></img>
 
- <br/>
+
 
 </div> 
 
