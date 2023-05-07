@@ -28,8 +28,6 @@
  
 <br/>
 
-### 🚧 Esse projeto dependia de uma api de outra pessoa que estava na heroko e quando a heroko se tornou paga a api parou de funcionar.
-
 <a id="Introdução"></a>
 ## 🧩 Introdução 
 
@@ -148,13 +146,8 @@ npm i
 
 <br /> 
 
-- [ ] ***- Melhora o codigo*** 
-- [ ] ***- Melhorar a responsividade do site***
-- [ ] ***- A api usada foi quando o heroku estava gratuito***
+- [ ] ***- Melhora o codigo, como o codigo é antigo teria que refatora todo*** 
 - [ ] ***- ***
-
-
-
 
 <br/>
 
